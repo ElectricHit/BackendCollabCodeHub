@@ -5,7 +5,7 @@ import { UsuarioService } from './usuario.service';
 @Controller('usuario')
 export class UsuarioController {
 
-    constructor(private usuarioService: UsuarioService){}
+    constructor(private readonly usuarioService: UsuarioService){}
 
 
     @Post("/crear")
@@ -20,15 +20,19 @@ export class UsuarioController {
 
     }
 
+    @Get("/usuarios")
+    async obtenerUsuarios(@Res() res){
+        const usuarioObtenido = await this.usuarioService.obtenerUsuarios();
+        if(!usuarioObtenido) throw new NotFoundException("No hay usuarios");
+        res.status(HttpStatus.OK).json({
+            usuarioObtenido:usuarioObtenido
+
+        })
+
+    }
 
 
-    @Post()
-
-
-
-
-
-    @Get('a/:idUsuario')
+    @Get('/:idUsuario')
     async obtenerUsuario(@Res() res, @Param("idUsuario") idUsuario){
         const usuarioObtenido = await this.usuarioService.obtenerUsuario(idUsuario);
         console.log(idUsuario)
@@ -41,27 +45,17 @@ export class UsuarioController {
     }
 
 
-    @Get('usuarios/:id')
-    async obtenerUsuario(@Res() res, @Param("id") idUser){
-        const usuario = await this.usuariosService.getUsuario(idUser);
-        console.log("Si recibo algo")
-        if(!usuario) throw new NotFoundException("Ayuda esto no funciona");
+    @Put("actualizar/:idUsuario")
+    async actualizarUsuario(@Res() res,@Body() crearUsuarioDTO: CrearUsuarioDTO, @Param("idUsario") idUsuario){
+        const usuarioActualizado = await this.usuarioService.actualizarUsuario(idUsuario,crearUsuarioDTO);
+        if(!usuarioActualizado) throw new NotFoundException("El usuario no se actualizo");
         return res.status(HttpStatus.OK).json({
-          usuario:usuario  
-        });
-
-    }
-
-
-    @Get("/usuario")
-    async obtenerUsuarios(@Res() res){
-        const usuarioObtenido = await this.usuarioService.obtenerUsuarios();
-        if(!usuarioObtenido) throw new NotFoundException("No hay usuarios");
-        res.status(HttpStatus.OK).json({
-            usuarioObtenido:usuarioObtenido
+            message:"Usuario actualizado",
+            usuarioActualizado: usuarioActualizado
 
         })
 
     }
+
 
 }

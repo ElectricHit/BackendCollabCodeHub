@@ -18,7 +18,9 @@ export class UsuarioService {
     }
 
     async actualizarUsuario(usuarioID:string, crearUsuarioDTO: CrearUsuarioDTO): Promise<UsuarioInt>{
-        const usuarioAc = await this.usuarioDB.findByIdAndUpdate(usuarioID, crearUsuarioDTO, { new:true});
+        //const usuarioAc = await this.usuarioDB.findByIdAndUpdate(usuarioID, crearUsuarioDTO, { new:true});
+        const usuarioAc = await this.usuarioDB.findById(usuarioID);
+        console.log(usuarioAc,"Chingue su madre")
         return usuarioAc;
     }
 
@@ -26,6 +28,7 @@ export class UsuarioService {
         const usuarioOb = await this.usuarioDB.findById(usuarioID);
         return usuarioOb;
     }
+
 
     async obtenerUsuarios(): Promise<UsuarioInt[]>{
         const usuarioOb = await this.usuarioDB.find();
