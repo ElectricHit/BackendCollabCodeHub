@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { UsuarioInt } from 'src/interfaces/usuario.interface';
@@ -48,6 +48,20 @@ export class UsuarioService {
     }
 
     obtenerProyectos(){
+
+    }
+
+    async login(usuario: string, contrasena: string): Promise<UsuarioInt | null>{
+        const usuarioObtenido = await this.usuarioDB.findOne({usuario});
+        if(!usuarioObtenido){
+            throw new UnauthorizedException('Usuario no encontrado');
+        }
+        console.log(usuarioObtenido.contrasena)
+        if(usuarioObtenido.contrasena != contrasena){
+            throw new UnauthorizedException('Contraseña incorrecta');
+        }
+        console.log("Autentificacion exitosa");
+        return usuarioObtenido;
 
     }
 

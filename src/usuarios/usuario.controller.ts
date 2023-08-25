@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Put, Patch,Res,HttpStatus, Body , Param,NotFoundException} from '@nestjs/common';
-import { CrearUsuarioDTO, CrearProyectoDTO } from 'src/dto/usuario.dto';
+import { CrearUsuarioDTO, CrearProyectoDTO,loginDTO } from 'src/dto/usuario.dto';
 import { UsuarioService } from './usuario.service';
 
 @Controller('usuario')
@@ -57,5 +57,34 @@ export class UsuarioController {
 
     }
 
+    @Post('/login')
+    async login(@Res() res, @Body() loginDTO: loginDTO){
+        
+    const usuario = await this.usuarioService.login(
+      loginDTO.usuario,
+      loginDTO.contrasena,
+      );
+    
+      if (!usuario) {
+        console.log("No se pudo encontrar al usuario")
+        return {exito:false, message: 'Error al iniciar sesion'}
+      }
 
+      return res.status(HttpStatus.OK).json({
+        exito: true,
+        mensaje: 'Usuario autenticado correctamente',
+        usuario: usuario
+      });
+    } 
+
+
+
+    /*@Post('/login')
+    login(@Body() u) {
+    if(u.usuario == 'Roxana' && u.contrasena == '123'){
+      return {exito: true, message: 'Inicio de sesión exitoso', usuario: u.usuario}
+    }else{
+      return {exito:false, message: 'Error al iniciar sesion'}
+    }
+  }*/
 }

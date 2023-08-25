@@ -4,7 +4,12 @@ export interface UsuarioInt extends Document{
     readonly usuario: string,
     readonly correo: string,
     readonly contrasena: string,
-    readonly IdPlan: number,
+    readonly plan: [{
+        readonly idPlan: number,
+        readonly cantidad: number,
+        readonly fechaAdquisicion: Date
+    }
+    ],
     readonly IdUsuario: number,
     readonly Proyectos: [
     {
