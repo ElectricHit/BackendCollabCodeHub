@@ -27,3 +27,8 @@ export class loginDTO{
     readonly usuario: string;
     readonly contrasena: string
 }
+
+export class CambiarContrasenaDTO{
+    readonly usuario: string;
+    readonly contrasena: string
+}

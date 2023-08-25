@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Put, Patch,Res,HttpStatus, Body , Param,NotFoundException} from '@nestjs/common';
-import { CrearUsuarioDTO, CrearProyectoDTO,loginDTO } from 'src/dto/usuario.dto';
+import { CrearUsuarioDTO, CrearProyectoDTO,loginDTO, CambiarContrasenaDTO} from 'src/dto/usuario.dto';
 import { UsuarioService } from './usuario.service';
 
 @Controller('usuario')
@@ -15,7 +15,20 @@ export class UsuarioController {
         console.log(crearUsuarioDTO);
         return res.status(HttpStatus.OK).json({
             mensaje: "El usuario a sido creado con exito",
-            usuarioNuevo: usuarioNuevo
+            usuario: usuarioNuevo
+        })
+
+    }
+
+
+    @Patch("/contrasena")
+    async cambiarContrasena(@Res() res, @Body() cambiarContrasenaDTO : CambiarContrasenaDTO){
+       const usuarioContra = await this.usuarioService.actualizarContraseña(cambiarContrasenaDTO.usuario, cambiarContrasenaDTO.contrasena);
+        
+        console.log(cambiarContrasenaDTO);
+        return res.status(HttpStatus.OK).json({
+            mensaje: "La contraseña se cambio con exito",
+            usuarioContra: usuarioContra
         })
 
     }
@@ -77,14 +90,4 @@ export class UsuarioController {
       });
     } 
 
-
-
-    /*@Post('/login')
-    login(@Body() u) {
-    if(u.usuario == 'Roxana' && u.contrasena == '123'){
-      return {exito: true, message: 'Inicio de sesión exitoso', usuario: u.usuario}
-    }else{
-      return {exito:false, message: 'Error al iniciar sesion'}
-    }
-  }*/
 }

@@ -20,7 +20,7 @@ export class UsuarioService {
     async actualizarUsuario(usuarioID:string, crearUsuarioDTO: CrearUsuarioDTO): Promise<UsuarioInt>{
         //const usuarioAc = await this.usuarioDB.findByIdAndUpdate(usuarioID, crearUsuarioDTO, { new:true});
         const usuarioAc = await this.usuarioDB.findById(usuarioID);
-        console.log(usuarioAc,"Chingue su madre")
+        console.log(usuarioAc,"Si se actualizo")
         return usuarioAc;
     }
 
@@ -34,6 +34,18 @@ export class UsuarioService {
         const usuarioOb = await this.usuarioDB.find();
         return usuarioOb;
     }
+
+    async actualizarContraseña(usuario: string, contrasena: string):Promise<UsuarioInt>{
+        const updates = {
+            contrasena: contrasena
+          };
+        console.log("Si llamo al servicio de actualizar contraseña")
+        const usuarioOb = await this.usuarioDB.findOneAndUpdate({usuario},
+            { $set: updates },
+            { new: true } )
+            return usuarioOb
+    }
+
 
     crearProyecto(){
 
