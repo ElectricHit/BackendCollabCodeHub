@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Put, Patch,Res,HttpStatus, Body , Param,NotFoundException} from '@nestjs/common';
-import { CrearUsuarioDTO, CrearProyectoDTO,loginDTO, CambiarContrasenaDTO} from 'src/dto/usuario.dto';
+import { CrearUsuarioDTO, CrearProyectoDTO,loginDTO, CambiarContrasenaDTO, PlanesDTO, CambiarPlanDTO} from 'src/dto/usuario.dto';
 import { UsuarioService } from './usuario.service';
 
 @Controller('usuario')
@@ -33,6 +33,18 @@ export class UsuarioController {
 
     }
 
+    @Patch("/plan")
+    async cambiarPlan(@Res() res, @Body() cambiarPlanDTO : CambiarPlanDTO){
+       const usuarioPlan = await this.usuarioService.actualizarPlan(cambiarPlanDTO.usuario, cambiarPlanDTO.idPlan, cambiarPlanDTO.cantidad);
+       
+        console.log(cambiarPlanDTO);
+        return res.status(HttpStatus.OK).json({
+            mensaje: "El plan se cambio con exito",
+            usuarioPlan: usuarioPlan
+        })
+
+    }
+
     @Get("/usuarios")
     async obtenerUsuarios(@Res() res){
         const usuarioObtenido = await this.usuarioService.obtenerUsuarios();
@@ -41,7 +53,6 @@ export class UsuarioController {
             usuarioObtenido:usuarioObtenido
 
         })
-
     }
 
 
@@ -54,7 +65,6 @@ export class UsuarioController {
             usuarioObtenido:usuarioObtenido
 
         })
-
     }
 
 

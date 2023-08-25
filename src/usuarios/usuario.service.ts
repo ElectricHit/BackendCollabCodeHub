@@ -46,6 +46,28 @@ export class UsuarioService {
             return usuarioOb
     }
 
+    async actualizarPlan(usuario: string, idPlan: number, cantidad: number):Promise<UsuarioInt>{
+        const updates = {
+            plan: [
+                {
+                    idPlan: idPlan,
+                    cantidad: cantidad,
+                    fechaAdquisicion: new Date()
+                }
+            ]
+
+
+
+          };
+        console.log("Si llamo al servicio de actualizar plan")
+        const usuarioOb = await this.usuarioDB.findOneAndUpdate({usuario},
+            { $set: updates },
+            { new: true } )
+            return usuarioOb
+    }
+
+    
+
 
     crearProyecto(){
 
