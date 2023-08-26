@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export class CrearUsuarioDTO{
     readonly usuario: string;
     readonly correo: string;
@@ -8,7 +10,7 @@ export class CrearUsuarioDTO{
 
 }
 export class CrearProyectoDTO{
-    _id: any
+    _id: any;
     readonly IdUsuario: number;
     readonly IdProyecto: number;
     readonly nombre: string;
@@ -17,6 +19,19 @@ export class CrearProyectoDTO{
     readonly CSS: string;
     readonly JavaScript: string;
 }
+
+export class ActualizarProyectoDTO{
+    usuarioID: string ; 
+    proyecto : string ; 
+    datosProyecto: CrearProyectoDTO;
+}
+
+export class CrearProyectoUsuarioDTO{
+    readonly IdUsuario: string;
+    readonly Proyectos: CrearProyectoDTO
+}
+
+
 export class PlanesDTO{ 
     readonly idPlan: number;
     readonly cantidad: number;

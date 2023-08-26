@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Put, Patch,Res,HttpStatus, Body , Param,NotFoundException} from '@nestjs/common';
-import { CrearUsuarioDTO, CrearProyectoDTO,loginDTO, CambiarContrasenaDTO, PlanesDTO, CambiarPlanDTO} from 'src/dto/usuario.dto';
+import { CrearUsuarioDTO, CrearProyectoDTO,loginDTO, CambiarContrasenaDTO, PlanesDTO, CambiarPlanDTO, CrearProyectoUsuarioDTO, ActualizarProyectoDTO} from 'src/dto/usuario.dto';
 import { UsuarioService } from './usuario.service';
 
 @Controller('usuario')
@@ -15,6 +15,16 @@ export class UsuarioController {
         console.log(crearUsuarioDTO);
         return res.status(HttpStatus.OK).json({
             mensaje: "El usuario a sido creado con exito",
+            usuario: usuarioNuevo
+        })
+
+    }
+
+    @Post("/crear/proyecto")
+    async crearProyecto(@Res() res, @Body() crearProyectoUsuarioDTO: CrearProyectoUsuarioDTO){
+       const usuarioNuevo = await this.usuarioService.crearProyecto(crearProyectoUsuarioDTO);        
+        return res.status(HttpStatus.OK).json({
+            mensaje: "El usuario a sido encontrado y se ha agregado el proyecto",
             usuario: usuarioNuevo
         })
 
@@ -52,6 +62,18 @@ export class UsuarioController {
         return res.status(HttpStatus.OK).json({
             mensaje: "El plan se cambio con exito",
             usuarioPlan: usuarioPlan
+        })
+
+    }
+
+
+    @Patch("/actualizar/proyecto")
+    async actualizarProyecto(@Res() res, @Body() actualizarProyectoDTO : ActualizarProyectoDTO){
+       const proyectoAct = await this.usuarioService.actualizarProyecto(actualizarProyectoDTO.usuarioID, actualizarProyectoDTO.proyecto, actualizarProyectoDTO.datosProyecto);
+       
+        return res.status(HttpStatus.OK).json({
+            mensaje: "El plan se cambio con exito",
+            actualizarProyectoDTO: actualizarProyectoDTO
         })
 
     }
