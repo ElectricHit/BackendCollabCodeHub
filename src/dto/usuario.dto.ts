@@ -8,6 +8,7 @@ export class CrearUsuarioDTO{
 
 }
 export class CrearProyectoDTO{
+    _id: any
     readonly IdUsuario: number;
     readonly IdProyecto: number;
     readonly nombre: string;
@@ -29,8 +30,9 @@ export class loginDTO{
 }
 
 export class CambiarContrasenaDTO{
-    readonly usuario: string;
+    readonly _id: any;
     readonly contrasena: string
+    readonly contrasenaAnterior: string
 }
 
 export class CambiarPlanDTO{

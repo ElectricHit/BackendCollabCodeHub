@@ -13,6 +13,7 @@ export interface UsuarioInt extends Document{
     readonly IdUsuario: number,
     readonly Proyectos: [
     {
+        _id: any
         readonly IdUsuario: number,
         readonly IdProyecto: number,
         readonly nombre: string,

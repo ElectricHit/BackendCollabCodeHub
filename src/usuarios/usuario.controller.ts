@@ -23,13 +23,24 @@ export class UsuarioController {
 
     @Patch("/contrasena")
     async cambiarContrasena(@Res() res, @Body() cambiarContrasenaDTO : CambiarContrasenaDTO){
-       const usuarioContra = await this.usuarioService.actualizarContraseña(cambiarContrasenaDTO.usuario, cambiarContrasenaDTO.contrasena);
+       const usuarioContra = await this.usuarioService.actualizarContraseña(cambiarContrasenaDTO._id, cambiarContrasenaDTO.contrasena, cambiarContrasenaDTO.contrasenaAnterior);
         
+        if(usuarioContra==null){
+            return res.status(HttpStatus.OK).json({
+                mensaje: "La contraseña no se cambio",
+        })    
+
+        }else{
+
         console.log(cambiarContrasenaDTO);
         return res.status(HttpStatus.OK).json({
-            mensaje: "La contraseña se cambio con exito",
-            usuarioContra: usuarioContra
+        mensaje: "La contraseña se cambio con exito",
+        usuarioContra: usuarioContra
         })
+
+        }
+
+        
 
     }
 
@@ -55,6 +66,42 @@ export class UsuarioController {
         })
     }
 
+    
+    @Get('proyectos/:idUsuario')
+    async obtenerProyectos(@Res() res, @Param("idUsuario") idUsuario){
+        const proyectosOb = await this.usuarioService.obtenerProyectos(idUsuario);
+        const nombresProyectos = proyectosOb.map(proyecto => ({ _id: proyecto._id, nombre: proyecto.nombre}));
+
+        console.log(idUsuario)
+        return res.status(HttpStatus.OK).json({
+            message: "si obtuvo todos los proyectos",
+            nombresProyectos: nombresProyectos
+        })
+    }
+
+
+    @Get('proyectos/:idUsuario')
+    async obtenerNombresProyectos(@Res() res, @Param("idUsuario") idUsuario) {
+        const proyectosOb = await this.usuarioService.obtenerProyectos(idUsuario);
+        const nombresProyectos = proyectosOb.map(proyecto => proyecto.nombre);
+    
+        return res.status(HttpStatus.OK).json({
+            message: "Obtenidos los nombres de los proyectos",
+            nombresProyectos: nombresProyectos
+        });
+    }
+    
+
+
+    @Get('proyecto/:idUsuario')
+    async obtenerProyecto(@Res() res, @Body() crearProyectoDTO: CrearProyectoDTO,@Param("idUsuario") idUsuario){
+        const proyectoOb = await this.usuarioService.obtenerProyecto(idUsuario,crearProyectoDTO._id);
+        console.log(idUsuario)
+        return res.status(HttpStatus.OK).json({
+            message: "si funca",
+            proyectosOb: proyectoOb
+        })
+    }
 
     @Get('/:idUsuario')
     async obtenerUsuario(@Res() res, @Param("idUsuario") idUsuario){
@@ -79,6 +126,9 @@ export class UsuarioController {
         })
 
     }
+
+    
+
 
     @Post('/login')
     async login(@Res() res, @Body() loginDTO: loginDTO){
