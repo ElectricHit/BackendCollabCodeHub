@@ -115,9 +115,9 @@ export class UsuarioController {
     
 
 
-    @Get('proyecto/:idUsuario')
-    async obtenerProyecto(@Res() res, @Body() crearProyectoDTO: CrearProyectoDTO,@Param("idUsuario") idUsuario){
-        const proyectoOb = await this.usuarioService.obtenerProyecto(idUsuario,crearProyectoDTO._id);
+    @Get(':idUsuario/proyecto/:idProyecto')
+    async obtenerProyecto(@Res() res,@Param("idUsuario") idUsuario, @Param("idProyecto") idProyecto){
+        const proyectoOb = await this.usuarioService.obtenerProyecto(idUsuario,idProyecto);
         console.log(idUsuario)
         return res.status(HttpStatus.OK).json({
             message: "si funca",
